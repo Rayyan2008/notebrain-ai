@@ -46,12 +46,16 @@ export function SiteNav() {
 
       {/* Right auth */}
       <div className="flex items-center gap-2">
-        <Button variant="ghost" className="h-9 rounded-full px-4 text-sm">
-          Log in
-        </Button>
-        <Button className="h-9 rounded-full bg-brand px-4 text-brand-foreground hover:bg-brand/90 text-sm">
-          Sign up
-        </Button>
+        <Link href="/auth/signin">
+          <Button variant="ghost" className="h-9 rounded-full px-4 text-sm">
+            Log in
+          </Button>
+        </Link>
+        <Link href="/auth/signup">
+          <Button className="h-9 rounded-full bg-brand px-4 text-brand-foreground hover:bg-brand/90 text-sm">
+            Sign up
+          </Button>
+        </Link>
       </div>
     </div>
   )
