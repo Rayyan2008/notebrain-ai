@@ -2,6 +2,7 @@
 
 import type React from "react"
 
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { DoodleArrows } from "@/components/doodle-arrows"
 import { LogoStrip } from "@/components/logo-strip"
@@ -45,17 +46,20 @@ export function Hero() {
 
       {/* CTA group */}
       <div className="mt-5 flex items-center gap-3">
-        <Button className="h-12 rounded-full bg-brand px-5 text-base text-brand-foreground hover:bg-brand/90">
-          <Globe className="mr-2 size-4" aria-hidden="true" />
-          Get started
-        </Button>
+        <Link href="/auth/signup">
+          <Button className="h-12 rounded-full bg-brand px-5 text-base text-brand-foreground hover:bg-brand/90">
+            <Globe className="mr-2 size-4" aria-hidden="true" />
+            Get started
+          </Button>
+        </Link>
         <button
           className={cn(
             "inline-flex h-12 w-12 items-center justify-center rounded-full border",
             "border-border bg-background/70 text-foreground/80 hover:text-foreground",
             "transition-colors",
           )}
-          aria-label="Next"
+          aria-label="Scroll to features"
+          onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
         >
           <ChevronRight className="size-5" aria-hidden="true" />
         </button>

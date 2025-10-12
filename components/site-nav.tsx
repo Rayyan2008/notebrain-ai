@@ -30,18 +30,18 @@ export function SiteNav() {
 
       {/* Center nav */}
       <nav className="hidden gap-6 text-sm md:flex">
-        <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+        <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
           Features
-        </Link>
-        <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+        </a>
+        <a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors">
           Pricing
-        </Link>
-        <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+        </a>
+        <a href="#testimonials" className="text-muted-foreground hover:text-foreground transition-colors">
           Testimonials
-        </Link>
-        <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+        </a>
+        <a href="#faq" className="text-muted-foreground hover:text-foreground transition-colors">
           FAQ
-        </Link>
+        </a>
       </nav>
 
       {/* Right auth */}
