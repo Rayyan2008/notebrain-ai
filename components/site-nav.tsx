@@ -1,10 +1,13 @@
 "use client"
 
 import Link from "next/link"
+import { useSession, signOut } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 export function SiteNav() {
+  const { data: session } = useSession()
+
   return (
     <div
       className={cn(
@@ -15,7 +18,7 @@ export function SiteNav() {
     >
       {/* Left logo glyph */}
       <Link
-        href="#"
+        href="/"
         className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background/60"
         aria-label="Notebrain.ai"
       >
@@ -30,32 +33,65 @@ export function SiteNav() {
 
       {/* Center nav */}
       <nav className="hidden gap-6 text-sm md:flex">
-        <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
-          Features
-        </a>
-        <a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors">
-          Pricing
-        </a>
-        <a href="#testimonials" className="text-muted-foreground hover:text-foreground transition-colors">
-          Testimonials
-        </a>
-        <a href="#faq" className="text-muted-foreground hover:text-foreground transition-colors">
-          FAQ
-        </a>
+        {session ? (
+          <>
+            <Link href="/dashboard" className="text-muted-foreground hover:text-foreground transition-colors">
+              Dashboard
+            </Link>
+            <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
+              Features
+            </a>
+            <a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors">
+              Pricing
+            </a>
+          </>
+        ) : (
+          <>
+            <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
+              Features
+            </a>
+            <a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors">
+              Pricing
+            </a>
+            <a href="#testimonials" className="text-muted-foreground hover:text-foreground transition-colors">
+              Testimonials
+            </a>
+            <a href="#faq" className="text-muted-foreground hover:text-foreground transition-colors">
+              FAQ
+            </a>
+          </>
+        )}
       </nav>
 
       {/* Right auth */}
       <div className="flex items-center gap-2">
-        <Link href="/auth/signin">
-          <Button variant="ghost" className="h-9 rounded-full px-4 text-sm">
-            Log in
-          </Button>
-        </Link>
-        <Link href="/auth/signup">
-          <Button className="h-9 rounded-full bg-brand px-4 text-brand-foreground hover:bg-brand/90 text-sm">
-            Sign up
-          </Button>
-        </Link>
+        {session ? (
+          <>
+            <span className="text-sm text-muted-foreground hidden sm:inline">
+              Welcome, {session.user?.name || session.user?.email}
+            </span>
+            <Button
+              variant="ghost"
+              className="h-9 rounded-full px-4 text-sm"
+              onClick={() => signOut()}
+            >
+              Sign out
+            </Button>
+          </>
+        ) : (
+          <>
+            <Link href="/auth/signin">
+              <Button variant="ghost" className="h-9 rounded-full px-4 text-sm">
+                Log in
+              </Button>
+            </Link>
+            <Link href="/auth/signup">
+              <Button className="h-9 rounded-full bg-brand px-4 text-brand-foreground hover:bg-brand/90 text-sm">
+                Sign up
+              </Button>
+            </Link>
+          </>
+        )}
       </div>
     </div>
   )
