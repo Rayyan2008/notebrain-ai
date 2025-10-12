@@ -1,6 +1,7 @@
 import { SiteNav } from "@/components/site-nav"
 import { Hero } from "@/components/hero"
 import { Features } from "@/components/features"
+import { HowItWorks } from "@/components/how-it-works"
 import { Pricing } from "@/components/pricing"
 import { Testimonials } from "@/components/testimonials"
 import { FAQ } from "@/components/faq"
@@ -25,6 +26,9 @@ export default function Page() {
         </section>
         <section id="features" className="mx-auto max-w-screen-xl px-4 py-16">
           <Features />
+        </section>
+        <section id="how-it-works" className="mx-auto max-w-screen-xl px-4 py-16 bg-secondary/20">
+          <HowItWorks />
         </section>
         <section id="pricing" className="mx-auto max-w-screen-xl px-4 py-16 bg-secondary/20">
           <Pricing />
