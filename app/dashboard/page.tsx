@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge"
 import { Upload, Link, FileText, Play, Loader2, Sparkles, Brain, Zap } from "lucide-react"
 import { AnimatedCat } from "@/components/animated-cat"
+import { Chatbot } from "@/components/chatbot"
 
 export default function DashboardPage() {
   const { data: session, status } = useSession()
@@ -262,6 +263,9 @@ export default function DashboardPage() {
 
       {/* Animated Cat */}
       <AnimatedCat />
+
+      {/* Chatbot */}
+      <Chatbot />
     </main>
   )
 }
