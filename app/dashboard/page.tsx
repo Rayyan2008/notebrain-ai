@@ -31,8 +31,27 @@ export default function DashboardPage() {
     e.preventDefault()
     setIsProcessing(true)
 
-    // Mock processing - replace with actual API call later
-    setTimeout(() => {
+    try {
+      const response = await fetch("/api/summarize", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          url: link,
+          format: summaryFormat,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to process content")
+      }
+
+      const data = await response.json()
+      setResults(data)
+    } catch (error) {
+      console.error("Error processing content:", error)
+      // For now, show mock data on error
       setResults({
         title: "Sample Content Title",
         summary: summaryFormat === "bullet-points"
@@ -51,8 +70,9 @@ export default function DashboardPage() {
               { question: "What formats does it support?", answer: "YouTube videos, PDFs, articles, and audio files" }
             ]
       })
+    } finally {
       setIsProcessing(false)
-    }, 2000)
+    }
   }
 
   return (
