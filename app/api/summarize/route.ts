@@ -40,18 +40,6 @@ async function extractContentFromUrl(url: string): Promise<{ title: string; cont
 }
 
 async function generateSummary(content: string, format: string): Promise<any> {
-  // For now, return mock data since OpenAI key is not configured
-  return {
-    title: "Content Summary",
-    summary: format === "bullet-points"
-      ? ["Key point 1: Content extracted and summarized", "Key point 2: AI processing completed", "Key point 3: Summary generated"]
-      : format === "flashcards"
-      ? [{ question: "What was processed?", answer: "Content from the provided URL" }, { question: "How was it summarized?", answer: "Using AI analysis" }]
-      : [{ question: "What is this summary about?", answer: "Content extracted from a URL" }, { question: "How was it created?", answer: "Using AI summarization" }]
-  }
-
-  // Uncomment below when OpenAI API key is available
-  /*
   const formatPrompts = {
     "bullet-points": "Summarize the content in 3-5 key bullet points. Each point should be concise and capture the main ideas.",
     "flashcards": "Create 3-5 flashcards from the content. Each flashcard should have a question and a concise answer.",
@@ -115,7 +103,6 @@ Return the result in JSON format with this structure:
     console.error("OpenAI API error:", error)
     throw new Error("Failed to generate summary")
   }
-  */
 }
 
 export async function POST(request: NextRequest) {
