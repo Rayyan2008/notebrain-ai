@@ -77,32 +77,34 @@ export default function DashboardPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-background via-background to-purple-50/20 dark:to-purple-950/20 p-4 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-purple-200/30 dark:bg-purple-800/30 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-blue-200/30 dark:bg-blue-800/30 rounded-full blur-xl animate-pulse delay-1000"></div>
-        <div className="absolute bottom-20 left-1/3 w-40 h-40 bg-pink-200/30 dark:bg-pink-800/30 rounded-full blur-xl animate-pulse delay-500"></div>
-      </div>
+    <main className="relative min-h-dvh overflow-hidden">
+      {/* Spotlight background like landing page */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: "radial-gradient(60% 45% at 50% 25%, var(--color-hero-spotlight) 0%, transparent 70%)",
+        }}
+      />
 
-      <div className="mx-auto max-w-4xl relative z-10">
+      <div className="mx-auto max-w-4xl relative z-10 p-4">
         <div className="mb-8 text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <Brain className="h-8 w-8 text-purple-600 animate-pulse" />
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+            <Brain className="h-8 w-8 text-brand animate-pulse" />
+            <h1 className="text-4xl font-bold text-foreground">
               Notebrain Dashboard
             </h1>
-            <Sparkles className="h-8 w-8 text-yellow-500 animate-bounce" />
+            <Sparkles className="h-8 w-8 text-brand animate-bounce" />
           </div>
           <p className="text-muted-foreground text-lg">Transform any content into smart summaries with AI magic ✨</p>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Input Form */}
-          <Card className="border-purple-200/50 dark:border-purple-800/50 shadow-lg hover:shadow-xl transition-all duration-300">
-            <CardHeader className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-950/50 dark:to-blue-950/50">
+          <Card className="shadow-lg hover:shadow-xl transition-all duration-300">
+            <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Zap className="h-5 w-5 text-purple-600" />
+                <Zap className="h-5 w-5 text-brand" />
                 Input Content
               </CardTitle>
               <CardDescription>
@@ -187,10 +189,10 @@ export default function DashboardPage() {
           </Card>
 
           {/* Results */}
-          <Card className="border-blue-200/50 dark:border-blue-800/50 shadow-lg hover:shadow-xl transition-all duration-300">
-            <CardHeader className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50">
+          <Card className="shadow-lg hover:shadow-xl transition-all duration-300">
+            <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-blue-600" />
+                <Sparkles className="h-5 w-5 text-brand" />
                 Summary Results
               </CardTitle>
               <CardDescription>
