@@ -19,7 +19,7 @@ export function Chatbot() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
-      content: "Hi! I'm your AI assistant. I can help you with questions about Notebrain, summarization, or any other queries you have. How can I assist you today?",
+      content: "Greetings, mortal! I'm VAEL, your witty AI companion. I can help with Notebrain, summarization, or just chat about the universe. What's on your mind, or should I start with a joke?",
       role: "assistant",
       timestamp: new Date(),
     },
@@ -49,21 +49,35 @@ export function Chatbot() {
     setInput("")
     setIsTyping(true)
 
-    // Simulate AI response (replace with actual API call)
+    // Simulate AI response with humor and context
     setTimeout(() => {
-      const responses = [
-        "That's a great question! Notebrain uses advanced AI to transcribe and summarize content from various sources including YouTube videos, PDFs, and articles.",
-        "I can help you understand how to use different summary formats like bullet points, flashcards, or Q&A. Which format are you interested in?",
-        "Notebrain supports multiple input types: YouTube links, PDF files, audio files, and web articles. What type of content would you like to summarize?",
-        "Our AI is trained to extract key information and organize it in structured formats. Would you like me to explain the summarization process in more detail?",
-        "Feel free to ask me anything about Notebrain's features, how to get started, or technical questions about the platform!",
-      ]
+      const userInput = input.toLowerCase()
+      let response = ""
 
-      const randomResponse = responses[Math.floor(Math.random() * responses.length)]
+      if (userInput.includes("joke") || userInput.includes("funny")) {
+        response = "Why did the AI go to therapy? It had too many unresolved issues! 😄 But seriously, how can I help with Notebrain?"
+      } else if (userInput.includes("summarize") || userInput.includes("summary")) {
+        response = "Ah, summarization! Notebrain's my specialty. It turns long-winded content into bite-sized brilliance. Try uploading a YouTube video or PDF – I'll handle the rest with a wink and a nod."
+      } else if (userInput.includes("notebrain") || userInput.includes("features")) {
+        response = "Notebrain is like a digital brain on steroids! It transcribes, summarizes, and organizes info from videos, articles, and more. Bullet points, flashcards, Q&A – you name it, I've got it. What's your favorite feature?"
+      } else if (userInput.includes("hello") || userInput.includes("hi")) {
+        response = "Greetings, fellow human! VAEL here, ready to dazzle with wit and wisdom. What's brewing in that brilliant mind of yours?"
+      } else if (userInput.includes("bye") || userInput.includes("goodbye")) {
+        response = "Farewell, my inquisitive friend! Remember, in the world of AI, I'm always just a chat away. Come back soon for more banter!"
+      } else {
+        const humorousResponses = [
+          "Hmm, that's a thinker! While I ponder the mysteries of the universe, Notebrain can summarize your content faster than you can say 'artificial intelligence'. What else can I assist with?",
+          "Ooh, intriguing! Did you know AI like me processes info at lightning speed? Notebrain uses that to create amazing summaries. Got a specific question?",
+          "Ah, the eternal quest for knowledge! I'm here to help with Notebrain's features, summarization tips, or just some light-hearted conversation. What's next on your agenda?",
+          "That's a good one! In the meantime, let me tell you: Notebrain supports YouTube, PDFs, audio, and web articles. Which format are you curious about?",
+          "Witty query! But let's get practical: Notebrain extracts key info and organizes it neatly. Bullet points, flashcards, Q&A – pick your poison!",
+        ]
+        response = humorousResponses[Math.floor(Math.random() * humorousResponses.length)]
+      }
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: randomResponse,
+        content: response,
         role: "assistant",
         timestamp: new Date(),
       }
@@ -93,7 +107,7 @@ export function Chatbot() {
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Bot className="h-5 w-5 text-brand" />
-            AI Assistant
+            VAEL
           </CardTitle>
           <Button
             variant="ghost"
@@ -105,7 +119,7 @@ export function Chatbot() {
           </Button>
         </CardHeader>
         <CardContent className="flex flex-col h-80 p-0">
-          <ScrollArea className="flex-1 px-4" ref={scrollAreaRef}>
+          <ScrollArea className="h-64 px-4" ref={scrollAreaRef}>
             <div className="space-y-4 py-4">
               {messages.map((message) => (
                 <div
