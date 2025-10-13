@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -9,7 +9,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
-import { Upload, Link, FileText, Play, Loader2 } from "lucide-react"
+import { Upload, Link, FileText, Play, Loader2, Sparkles, Brain, Zap } from "lucide-react"
+import { AnimatedCat } from "@/components/animated-cat"
 
 export default function DashboardPage() {
   const { data: session, status } = useSession()
@@ -76,18 +77,34 @@ export default function DashboardPage() {
   }
 
   return (
-    <main className="min-h-screen bg-background p-4">
-      <div className="mx-auto max-w-4xl">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">Dashboard</h1>
-          <p className="text-muted-foreground">Upload content or paste a link to get AI-powered summaries</p>
+    <main className="min-h-screen bg-gradient-to-br from-background via-background to-purple-50/20 dark:to-purple-950/20 p-4 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-purple-200/30 dark:bg-purple-800/30 rounded-full blur-xl animate-pulse"></div>
+        <div className="absolute top-40 right-20 w-24 h-24 bg-blue-200/30 dark:bg-blue-800/30 rounded-full blur-xl animate-pulse delay-1000"></div>
+        <div className="absolute bottom-20 left-1/3 w-40 h-40 bg-pink-200/30 dark:bg-pink-800/30 rounded-full blur-xl animate-pulse delay-500"></div>
+      </div>
+
+      <div className="mx-auto max-w-4xl relative z-10">
+        <div className="mb-8 text-center">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Brain className="h-8 w-8 text-purple-600 animate-pulse" />
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+              Notebrain Dashboard
+            </h1>
+            <Sparkles className="h-8 w-8 text-yellow-500 animate-bounce" />
+          </div>
+          <p className="text-muted-foreground text-lg">Transform any content into smart summaries with AI magic ✨</p>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Input Form */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Input Content</CardTitle>
+          <Card className="border-purple-200/50 dark:border-purple-800/50 shadow-lg hover:shadow-xl transition-all duration-300">
+            <CardHeader className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-950/50 dark:to-blue-950/50">
+              <CardTitle className="flex items-center gap-2">
+                <Zap className="h-5 w-5 text-purple-600" />
+                Input Content
+              </CardTitle>
               <CardDescription>
                 Paste a YouTube link or upload a PDF to get started
               </CardDescription>
@@ -98,6 +115,7 @@ export default function DashboardPage() {
                   variant={inputType === "link" ? "default" : "outline"}
                   size="sm"
                   onClick={() => setInputType("link")}
+                  className="transition-all duration-200 hover:scale-105"
                 >
                   <Link className="mr-2 h-4 w-4" />
                   Link
@@ -106,6 +124,7 @@ export default function DashboardPage() {
                   variant={inputType === "upload" ? "default" : "outline"}
                   size="sm"
                   onClick={() => setInputType("upload")}
+                  className="transition-all duration-200 hover:scale-105"
                 >
                   <Upload className="mr-2 h-4 w-4" />
                   Upload
@@ -168,9 +187,12 @@ export default function DashboardPage() {
           </Card>
 
           {/* Results */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Summary Results</CardTitle>
+          <Card className="border-blue-200/50 dark:border-blue-800/50 shadow-lg hover:shadow-xl transition-all duration-300">
+            <CardHeader className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50">
+              <CardTitle className="flex items-center gap-2">
+                <Sparkles className="h-5 w-5 text-blue-600" />
+                Summary Results
+              </CardTitle>
               <CardDescription>
                 Your AI-generated summary will appear here
               </CardDescription>
@@ -235,6 +257,9 @@ export default function DashboardPage() {
           </Card>
         </div>
       </div>
+
+      {/* Animated Cat */}
+      <AnimatedCat />
     </main>
   )
 }
