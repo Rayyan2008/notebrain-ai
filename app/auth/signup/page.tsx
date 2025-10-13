@@ -36,7 +36,7 @@ export default function SignUpPage() {
           <Button
             variant="outline"
             className="w-full"
-            onClick={() => signIn("google", { callbackUrl: "/" })}
+            onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
           >
             <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
               <path
@@ -62,7 +62,7 @@ export default function SignUpPage() {
           <Button
             variant="outline"
             className="w-full"
-            onClick={() => signIn("github", { callbackUrl: "/" })}
+            onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
           >
             <svg className="mr-2 h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
               <path
