@@ -119,10 +119,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "URL is required" }, { status: 400 })
     }
 
-    // Skip OpenAI check for now - using mock data
-    // if (!process.env.OPENAI_API_KEY) {
-    //   return NextResponse.json({ error: "AI service not configured" }, { status: 500 })
-    // }
+    if (!process.env.OPENAI_API_KEY) {
+      return NextResponse.json({ error: "OpenAI API key not configured. Please add OPENAI_API_KEY to your .env.local file." }, { status: 500 })
+    }
 
     // Extract content from URL
     const { title, content } = await extractContentFromUrl(url)

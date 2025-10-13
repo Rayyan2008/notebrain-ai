@@ -53,24 +53,10 @@ export default function DashboardPage() {
       setResults(data)
     } catch (error) {
       console.error("Error processing content:", error)
-      // For now, show mock data on error
+      // Show error message instead of mock data
       setResults({
-        title: "Sample Content Title",
-        summary: summaryFormat === "bullet-points"
-          ? [
-              "Key point 1: This is the first important point from the content",
-              "Key point 2: This is the second important point from the content",
-              "Key point 3: This is the third important point from the content"
-            ]
-          : summaryFormat === "flashcards"
-          ? [
-              { question: "What is the main topic?", answer: "The main topic is AI-powered summarization" },
-              { question: "How does it work?", answer: "It transcribes content and organizes it into structured formats" }
-            ]
-          : [
-              { question: "What is Notebrain?", answer: "Notebrain is an AI-powered tool for summarizing content" },
-              { question: "What formats does it support?", answer: "YouTube videos, PDFs, articles, and audio files" }
-            ]
+        title: "Error Processing Content",
+        summary: ["An error occurred while processing your content. Please check that you have added your OpenAI API key to the .env.local file and try again."]
       })
     } finally {
       setIsProcessing(false)
