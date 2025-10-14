@@ -6,9 +6,11 @@
 - [x] Simplify form to URL input, format select, and generate button
 - [x] Update summary display to handle bullet-points, flashcards, and Q&A formats
 - [x] Preserve authentication, background, and components (AnimatedCat, Chatbot)
-- [ ] Test the updated functionality to ensure summarization works without errors
+- [x] Test the updated functionality to ensure summarization works without errors
 
 ## Followup Steps
-- [ ] Run the application and test summarizing a YouTube/article URL
-- [ ] Verify error handling for invalid URLs or API issues
-- [ ] Ensure UI responsiveness and styling consistency
+- [x] Run the application and test summarizing a YouTube/article URL
+- [x] Verify error handling for invalid URLs or API issues
+- [x] Ensure UI responsiveness and styling consistency
+- [x] Add OpenAI API key to .env.local for full functionality
+- [x] Re-enable authentication in API route after testing

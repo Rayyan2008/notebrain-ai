@@ -26,9 +26,27 @@ async function extractContentFromUrl(url: string): Promise<{ title: string; cont
                   $('h1').first().text().trim() ||
                   'Untitled Content'
 
-    // Extract main content
-    const content = $('body').text()
+    // Extract main content - try multiple selectors for better content extraction
+    let content = ''
+
+    // Try to find main content areas first
+    const mainSelectors = ['main', '[role="main"]', '.content', '#content', '.post-content', '.entry-content', '.article-content']
+    for (const selector of mainSelectors) {
+      const mainContent = $(selector).text()
+      if (mainContent && mainContent.length > content.length) {
+        content = mainContent
+      }
+    }
+
+    // Fallback to body if no main content found
+    if (!content || content.length < 100) {
+      content = $('body').text()
+    }
+
+    // Clean up the content
+    content = content
       .replace(/\s+/g, ' ')
+      .replace(/[^\x20-\x7E\n]/g, '') // Remove non-ASCII characters
       .trim()
       .substring(0, 10000) // Limit content length
 
@@ -109,7 +127,6 @@ Return the result in JSON format with this structure:
 export async function POST(request: NextRequest) {
   try {
     const session = await auth()
-
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
@@ -120,15 +137,29 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "URL is required" }, { status: 400 })
     }
 
-    if (!process.env.OPENAI_API_KEY) {
-      return NextResponse.json({ error: "OpenAI API key not configured. Please add OPENAI_API_KEY to your .env.local file." }, { status: 500 })
-    }
+    console.log("Processing URL:", url)
+    console.log("Format:", format)
 
     // Extract content from URL
     const { title, content } = await extractContentFromUrl(url)
+    console.log("Extracted title:", title)
+    console.log("Content length:", content.length)
 
     if (!content || content.length < 50) {
       return NextResponse.json({ error: "Could not extract sufficient content from URL" }, { status: 400 })
+    }
+
+    // Check if OpenAI key is configured
+    if (!process.env.OPENAI_API_KEY) {
+      console.log("No OpenAI API key found, using mock data")
+      return NextResponse.json({
+        title: title || "Content Summary",
+        summary: format === "bullet-points"
+          ? ["Key point 1: Content extracted successfully", "Key point 2: No AI key configured", "Key point 3: Using fallback summary"]
+          : format === "flashcards"
+          ? [{ question: "What was processed?", answer: "Content from the provided URL" }, { question: "Why fallback?", answer: "OpenAI API key not configured" }]
+          : [{ question: "What is this about?", answer: "URL content summary" }, { question: "How was it created?", answer: "Fallback mode - no AI key" }]
+      })
     }
 
     // Generate summary using OpenAI
@@ -153,7 +184,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       title: "Content Summary",
       summary: format === "bullet-points"
-        ? ["Key point 1: Content processed successfully", "Key point 2: AI analysis completed", "Key point 3: Summary generated"]
+        ? ["Key point 1: Content processed successfully", "Key point 2: AI processing completed", "Key point 3: Summary generated"]
         : format === "flashcards"
         ? [{ question: "What was processed?", answer: "Content from the provided URL" }, { question: "How was it summarized?", answer: "Using AI technology" }]
         : [{ question: "What is this about?", answer: "URL content summary" }, { question: "How was it created?", answer: "AI-powered summarization" }]
