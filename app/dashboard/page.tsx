@@ -1,6 +1,6 @@
-"use client"
++"use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useSession } from "next-auth/react"
 import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -9,17 +9,17 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
-import { Upload, Link, FileText, Play, Loader2, Sparkles, Brain, Zap } from "lucide-react"
+import { FileText, Play, Loader2, Sparkles, Brain, Zap } from "lucide-react"
 import { AnimatedCat } from "@/components/animated-cat"
 import { Chatbot } from "@/components/chatbot"
 
 export default function DashboardPage() {
   const { data: session, status } = useSession()
-  const [inputType, setInputType] = useState<"link" | "upload">("link")
-  const [link, setLink] = useState("")
-  const [summaryFormat, setSummaryFormat] = useState("bullet-points")
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [results, setResults] = useState<any>(null)
+  const [url, setUrl] = useState("")
+  const [format, setFormat] = useState("bullet-points")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [summary, setSummary] = useState<any>(null)
 
   if (status === "loading") {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>
@@ -29,37 +29,27 @@ export default function DashboardPage() {
     redirect("/auth/signin")
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsProcessing(true)
+  const handleSummarize = async () => {
+    setLoading(true)
+    setError("")
+    setSummary(null)
 
     try {
-      const response = await fetch("/api/summarize", {
+      const res = await fetch("/api/summarize", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          url: link,
-          format: summaryFormat,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url, format }),
       })
 
-      if (!response.ok) {
-        throw new Error("Failed to process content")
-      }
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || "Something went wrong")
 
-      const data = await response.json()
-      setResults(data)
-    } catch (error) {
-      console.error("Error processing content:", error)
-      // Show error message instead of mock data
-      setResults({
-        title: "Error Processing Content",
-        summary: ["An error occurred while processing your content. Please check that you have added your OpenAI API key to the .env.local file and try again."]
-      })
+      setSummary(data)
+    } catch (err: any) {
+      console.error(err)
+      setError(err.message)
     } finally {
-      setIsProcessing(false)
+      setLoading(false)
     }
   }
 
@@ -99,79 +89,38 @@ export default function DashboardPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex gap-2">
-                <Button
-                  variant={inputType === "link" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setInputType("link")}
-                  className="transition-all duration-200 hover:scale-105"
-                >
-                  <Link className="mr-2 h-4 w-4" />
-                  Link
-                </Button>
-                <Button
-                  variant={inputType === "upload" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setInputType("upload")}
-                  className="transition-all duration-200 hover:scale-105"
-                >
-                  <Upload className="mr-2 h-4 w-4" />
-                  Upload
-                </Button>
+              <div>
+                <Label htmlFor="url">YouTube / Article URL</Label>
+                <Input
+                  id="url"
+                  placeholder="Paste a YouTube / article URL..."
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  className="bg-background text-foreground"
+                />
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
-                {inputType === "link" ? (
-                  <div>
-                    <Label htmlFor="link">YouTube Link or Article URL</Label>
-                    <Input
-                      id="link"
-                      placeholder="https://youtube.com/watch?v=... or https://example.com/article"
-                      value={link}
-                      onChange={(e) => setLink(e.target.value)}
-                      required
-                    />
-                  </div>
-                ) : (
-                  <div>
-                    <Label htmlFor="file">Upload PDF or Audio File</Label>
-                    <Input
-                      id="file"
-                      type="file"
-                      accept=".pdf,.mp3,.wav,.m4a"
-                      required
-                    />
-                  </div>
-                )}
+              <div>
+                <Label htmlFor="format">Summary Format</Label>
+                <Select value={format} onValueChange={setFormat}>
+                  <SelectTrigger className="bg-background text-foreground">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="bullet-points">Bullet Points</SelectItem>
+                    <SelectItem value="flashcards">Flashcards</SelectItem>
+                    <SelectItem value="qa">Q&A</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-                <div>
-                  <Label htmlFor="format">Summary Format</Label>
-                  <Select value={summaryFormat} onValueChange={setSummaryFormat}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="bullet-points">Bullet Points</SelectItem>
-                      <SelectItem value="flashcards">Flashcards</SelectItem>
-                      <SelectItem value="qa">Q&A</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <Button type="submit" className="w-full" disabled={isProcessing}>
-                  {isProcessing ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Processing...
-                    </>
-                  ) : (
-                    <>
-                      <Play className="mr-2 h-4 w-4" />
-                      Generate Summary
-                    </>
-                  )}
-                </Button>
-              </form>
+              <Button
+                onClick={handleSummarize}
+                disabled={loading || !url}
+                className="w-full bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-50"
+              >
+                {loading ? "Processing..." : "Generate Summary"}
+              </Button>
             </CardContent>
           </Card>
 
@@ -187,60 +136,30 @@ export default function DashboardPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {results ? (
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="font-semibold text-lg">{results.title}</h3>
-                    <Badge variant="secondary" className="mt-1">
-                      {summaryFormat.replace("-", " ").toUpperCase()}
-                    </Badge>
-                  </div>
+              {error && <p className="text-red-500">{error}</p>}
 
-                  {summaryFormat === "bullet-points" && (
-                    <ul className="space-y-2">
-                      {results.summary.map((point: string, index: number) => (
-                        <li key={index} className="flex items-start gap-2">
-                          <span className="text-brand mt-1">•</span>
-                          <span>{point}</span>
-                        </li>
+              {summary && (
+                <>
+                  <h2 className="text-xl font-semibold mb-2">{summary.title}</h2>
+                  {format === "bullet-points" && (
+                    <ul className="list-disc list-inside space-y-1">
+                      {summary.summary.map((point: string, i: number) => (
+                        <li key={i}>{point}</li>
                       ))}
                     </ul>
                   )}
 
-                  {summaryFormat === "flashcards" && (
-                    <div className="space-y-4">
-                      {results.summary.map((card: any, index: number) => (
-                        <Card key={index} className="p-4">
-                          <div className="space-y-2">
-                            <div>
-                              <strong>Q:</strong> {card.question}
-                            </div>
-                            <div>
-                              <strong>A:</strong> {card.answer}
-                            </div>
-                          </div>
-                        </Card>
-                      ))}
-                    </div>
-                  )}
-
-                  {summaryFormat === "qa" && (
-                    <div className="space-y-4">
-                      {results.summary.map((qa: any, index: number) => (
-                        <div key={index} className="space-y-1">
-                          <div className="font-medium">{qa.question}</div>
-                          <div className="text-muted-foreground">{qa.answer}</div>
-                          {index < results.summary.length - 1 && <hr className="mt-4" />}
+                  {format !== "bullet-points" && (
+                    <div className="space-y-2">
+                      {summary.summary.map((item: any, i: number) => (
+                        <div key={i}>
+                          <p className="font-medium">Q: {item.question}</p>
+                          <p>A: {item.answer}</p>
                         </div>
                       ))}
                     </div>
                   )}
-                </div>
-              ) : (
-                <div className="text-center text-muted-foreground py-8">
-                  <FileText className="mx-auto h-12 w-12 mb-4 opacity-50" />
-                  <p>No results yet. Submit some content to get started!</p>
-                </div>
+                </>
               )}
             </CardContent>
           </Card>

@@ -36,7 +36,7 @@ export function SiteNav() {
         {session ? (
           <>
             <Link href="/dashboard" className="text-muted-foreground hover:text-foreground transition-colors">
-              Dashboard
+              Summary
             </Link>
             <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
               Features
