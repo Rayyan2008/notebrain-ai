@@ -89,6 +89,7 @@ Return the result in JSON format with this structure:
       return JSON.parse(result)
     } catch (parseError) {
       console.error("Failed to parse OpenAI response:", result)
+      console.error("Parse error:", parseError)
       // Fallback to mock data
       return {
         title: "Content Summary",
