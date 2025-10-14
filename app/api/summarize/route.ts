@@ -143,7 +143,13 @@ export async function POST(request: NextRequest) {
     console.error("Summarize API error:", error)
 
     // Return mock data as fallback
-    const { format } = await request.json()
+    let format = "bullet-points" // default
+    try {
+      const body = await request.json()
+      format = body.format || "bullet-points"
+    } catch (e) {
+      // Ignore parse error, use default
+    }
     return NextResponse.json({
       title: "Content Summary",
       summary: format === "bullet-points"
