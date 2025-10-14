@@ -150,6 +150,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if OpenAI key is configured
+    console.log("OpenAI API key check:", process.env.OPENAI_API_KEY ? "Present" : "Missing")
     if (!process.env.OPENAI_API_KEY) {
       console.log("No OpenAI API key found, using mock data")
       return NextResponse.json({
