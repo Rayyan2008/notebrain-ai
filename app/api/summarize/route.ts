@@ -61,7 +61,7 @@ async function generateSummary(content: string, format: string): Promise<any> {
   try {
     // Escape content for shell command
     const escapedContent = content.replace(/"/g, '\\"').replace(/'/g, "\\'").replace(/\n/g, ' ').replace(/\r/g, '');
-    const command = `python lib/summarize.py "${escapedContent}" "${format}"`;
+    const command = `py lib/summarize.py "${escapedContent}" "${format}"`;
 
     console.log("Running Python command:", command);
 
