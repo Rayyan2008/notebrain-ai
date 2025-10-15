@@ -1,7 +1,11 @@
 import sys
 import json
 import os
-from openai import OpenAI
+try:
+    from openai import OpenAI
+except ImportError:
+    print("OpenAI library not installed. Please install with: pip install openai", file=sys.stderr)
+    sys.exit(1)
 
 def generate_summary(content: str, format: str) -> dict:
     format_prompts = {
