@@ -166,7 +166,9 @@ Return the result in JSON format with this structure:
 }
 
 export async function POST(request: NextRequest) {
-  console.log("API route called: /api/summarize")
+  console.log("=== API ROUTE CALLED: /api/summarize ===")
+  console.log("Timestamp:", new Date().toISOString())
+
   try {
     // Temporarily disable auth for testing
     // const session = await auth()
@@ -174,17 +176,31 @@ export async function POST(request: NextRequest) {
     //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     // }
 
-    const { url, format } = await request.json()
-    console.log("Request body:", { url, format })
+    const body = await request.json()
+    console.log("Raw request body:", JSON.stringify(body, null, 2))
+
+    const { url, format } = body
+    console.log("Parsed URL:", url)
+    console.log("Parsed format:", format)
 
     // Add debug info to response
     const debugInfo = {
       timestamp: new Date().toISOString(),
       url: url,
       format: format,
-      openaiKeyPresent: !!process.env.OPENAI_API_KEY
+      openaiKeyPresent: !!process.env.OPENAI_API_KEY,
+      nodeVersion: process.version,
+      cwd: process.cwd()
     }
-    console.log("Debug info:", debugInfo)
+    console.log("Debug info:", JSON.stringify(debugInfo, null, 2))
+
+    // TEMPORARY: Return test response to confirm API is working
+    console.log("Returning test response...")
+    return NextResponse.json({
+      title: "Test Response - API Working",
+      summary: ["API is responding correctly", "Debug logs added", "OpenAI key present: " + !!process.env.OPENAI_API_KEY],
+      debug: debugInfo
+    })
 
     if (!url) {
       return NextResponse.json({ error: "URL is required" }, { status: 400 })
