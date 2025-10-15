@@ -177,6 +177,15 @@ export async function POST(request: NextRequest) {
     const { url, format } = await request.json()
     console.log("Request body:", { url, format })
 
+    // Add debug info to response
+    const debugInfo = {
+      timestamp: new Date().toISOString(),
+      url: url,
+      format: format,
+      openaiKeyPresent: !!process.env.OPENAI_API_KEY
+    }
+    console.log("Debug info:", debugInfo)
+
     if (!url) {
       return NextResponse.json({ error: "URL is required" }, { status: 400 })
     }
