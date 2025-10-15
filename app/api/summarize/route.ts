@@ -127,11 +127,10 @@ Return the result in JSON format with this structure:
 
 export async function POST(request: NextRequest) {
   try {
-    // Temporarily disable auth for testing
-    // const session = await auth()
-    // if (!session) {
-    //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    // }
+    const session = await auth()
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
 
     const { url, format } = await request.json()
 
