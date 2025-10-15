@@ -14,3 +14,5 @@
 - [x] Ensure UI responsiveness and styling consistency
 - [x] Add OpenAI API key to .env.local for full functionality
 - [x] Re-enable authentication in API route after testing
+- [x] Integrate Python script for summarization using OpenAI Python library
+- [x] Test Python-based summarization functionality
