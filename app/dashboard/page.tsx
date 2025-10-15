@@ -30,23 +30,33 @@ export default function DashboardPage() {
   }
 
   const handleSummarize = async () => {
+    console.log("Frontend: Starting summarization request")
+    console.log("Frontend: URL:", url)
+    console.log("Frontend: Format:", format)
+
     setLoading(true)
     setError("")
     setSummary(null)
 
     try {
+      console.log("Frontend: Making fetch request to /api/summarize")
       const res = await fetch("/api/summarize", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url, format }),
       })
 
+      console.log("Frontend: Response status:", res.status)
+      console.log("Frontend: Response headers:", Object.fromEntries(res.headers.entries()))
+
       const data = await res.json()
+      console.log("Frontend: Response data:", data)
+
       if (!res.ok) throw new Error(data.error || "Something went wrong")
 
       setSummary(data)
     } catch (err: any) {
-      console.error(err)
+      console.error("Frontend error:", err)
       setError(err.message)
     } finally {
       setLoading(false)
