@@ -12,5 +12,5 @@
 - [ ] Update dashboard UI if needed to handle real responses
 
 ## Next Steps
-1. Run development server and test with actual URL
-2. Verify summarization works in different formats (bullet-points, flashcards, Q&A)
+1. Verify summarization works in different formats (bullet-points, flashcards, Q&A)
+2. Test with OpenAI API key configured
