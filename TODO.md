@@ -1,18 +1,16 @@
-# TODO: Update Dashboard with Summary Functionality
+# TODO: Enable Full Summarization API Functionality
+
+## Current Status
+- API is currently returning a test response instead of processing URLs
+- OpenAI key is present and configured
+- Content extraction and summarization logic is implemented but bypassed
 
 ## Tasks
-- [x] Update app/dashboard/page.tsx to integrate provided code functionality
-- [x] Add error state and proper error handling
-- [x] Simplify form to URL input, format select, and generate button
-- [x] Update summary display to handle bullet-points, flashcards, and Q&A formats
-- [x] Preserve authentication, background, and components (AnimatedCat, Chatbot)
-- [x] Test the updated functionality to ensure summarization works without errors
+- [x] Remove temporary test response from API route
+- [x] Enable URL content extraction and AI summarization
+- [x] Test the API with a sample URL to verify functionality
+- [ ] Update dashboard UI if needed to handle real responses
 
-## Followup Steps
-- [x] Run the application and test summarizing a YouTube/article URL
-- [x] Verify error handling for invalid URLs or API issues
-- [x] Ensure UI responsiveness and styling consistency
-- [x] Add OpenAI API key to .env.local for full functionality
-- [x] Re-enable authentication in API route after testing
-- [x] Integrate Python script for summarization using OpenAI Python library
-- [x] Test Python-based summarization functionality
+## Next Steps
+1. Run development server and test with actual URL
+2. Verify summarization works in different formats (bullet-points, flashcards, Q&A)

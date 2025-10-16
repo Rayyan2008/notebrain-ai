@@ -194,14 +194,6 @@ export async function POST(request: NextRequest) {
     }
     console.log("Debug info:", JSON.stringify(debugInfo, null, 2))
 
-    // TEMPORARY: Return test response to confirm API is working
-    console.log("Returning test response...")
-    return NextResponse.json({
-      title: "Test Response - API Working",
-      summary: ["API is responding correctly", "Debug logs added", "OpenAI key present: " + !!process.env.OPENAI_API_KEY],
-      debug: debugInfo
-    })
-
     if (!url) {
       return NextResponse.json({ error: "URL is required" }, { status: 400 })
     }
